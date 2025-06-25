@@ -1,108 +1,123 @@
-# 🧠 Swimlane & OpenAPI-Aware Chatbot
+# Swimlane & OpenAPI-Aware Chatbot
 
-A domain-specific chatbot capable of parsing and understanding Swimlane Diagrams (unstructured images) and OpenAPI 3.0 specifications (structured data), built to support development portal documentation, accelerate onboarding, and enhance process transparency.
+A domain-specific chatbot that can intelligently parse and understand both **Swimlane Diagrams** (unstructured images) and **OpenAPI 3.0 Specifications** (structured YAML/JSON).  
+It is designed to support development portal documentation, accelerate onboarding, and improve process transparency by enabling contextual, conversational access to backend workflows and APIs.
 
-> Built using GPT-4 Vision + local embeddings + FAISS vector search.  
+> Powered by GPT-4 Vision + MiniLM Embeddings + FAISS Vector Search + Streamlit UI
 
 ---
 
 ## Features
 
-- Upload and parse **Swimlane diagrams** (images)
-- Extract **structured step sequences** from images using GPT‑4 Vision
-- Parse **OpenAPI specs** (YAML or JSON) into searchable endpoint blocks
-- Embed parsed content using **MiniLM (local)** or OpenAI embeddings
-- Use **GPT‑4o** for domain-specific, contextual Q&A
-- Supports questions like:
-  - *"Who cancels the order?"*
-  - *"What does POST /orders do?"*
-  - *"How many actors are in this workflow?"*
+- Upload and parse **Swimlane diagrams** (image-based process flows)
+- Extract structured **step-by-step sequences** using GPT‑4 Vision
+- Upload **OpenAPI specs** (YAML or JSON) for structured endpoint extraction
+- Automatically embed and index both structured and unstructured data
+- Ask domain-specific questions and receive contextual responses using **GPT‑4o**
+- Example Questions:
+  - "Who cancels the order?"
+  - "What does `POST /orders` do?"
+  - "How many actors are in this workflow?"
+  - "What fields are required to create a new order?"
 
-## 📁 Project Structure
+---
 
+## Project Structure
+
+<pre>
+```
 chatbot-swimlane-app/
 │
-├── app.py                        # Main Streamlit app
+├── app.py                     # Main Streamlit app entry point
+│
 ├── chat/
-│   └── chatbot.py               # GPT-powered Q&A logic
+│   └── chatbot.py             # Handles question-answering using embeddings and GPT
 │
 ├── llm/
-│   └── gpt4_vision.py           # Extracts content from diagrams via GPT-4 Vision
+│   └── gpt4_vision.py         # Uses GPT-4 Vision API to extract structured steps from images
 │
 ├── openapi/
-│   ├── parser.py                # Loads & parses OpenAPI 3.0 specs
-│   └── embedder.py              # Embeds OpenAPI text blocks
+│   ├── parser.py              # Parses OpenAPI YAML/JSON and generates text docs
+│   └── embedder.py            # Embeds OpenAPI documentation blocks for search
 │
 ├── parser/
-│   ├── diagram_parser.py        # Parses GPT output into structured steps
-│   └── sequence_generator.py    # Converts steps into human-readable Markdown
+│   ├── diagram_parser.py      # Converts GPT vision output to structured steps
+│   └── sequence_generator.py  # Formats steps into human-readable sequences
 │
 ├── utils/
 │   ├── constants.py
-│   ├── helpers.py
+│   └── helpers.py             # Helpers for file I/O, validation, etc.
 │
 ├── vectorstore/
-│   ├── db.py                    # FAISS vector DB
-│   └── embedder.py             # Embedding logic (MiniLM or OpenAI)
+│   ├── db.py                  # FAISS-based vector DB implementation
+│   └── embedder.py            # Embedding logic using SentenceTransformer or OpenAI
 │
-└── .env                         # API Keys
+└── .env                       # Secrets (e.g., OPENAI_API_KEY)
+```
+</pre>
 
 ---
 
-## 🧪 How It Works
+## How It Works
 
-### 1. **Upload a Diagram or API Spec**
-- `.png`, `.jpg`, `.jpeg` for Swimlanes
-- `.yaml`, `.yml`, `.json` for OpenAPI
+### 1. **Upload a File**
+- **Swimlane Diagrams**: `.png`, `.jpg`, `.jpeg`
+- **OpenAPI Specs**: `.yaml`, `.yml`, `.json`
 
-### 2. **Parsing Logic**
-- **Swimlanes**: Processed using `gpt-4-vision`, converted to JSON steps
-- **OpenAPI Specs**: Parsed using `PyYAML`, summarized into endpoint docs
+### 2. **Parsing**
+- **Swimlanes**: GPT‑4 Vision processes the image and extracts a sequence of structured steps (`actor`, `action`, `decision`, etc.)
+- **OpenAPI**: YAML/JSON specs are parsed into human-readable endpoint descriptions
 
 ### 3. **Embedding & Indexing**
-- Uses **MiniLM (`all-MiniLM-L6-v2`)** via `SentenceTransformer`
-- Embeddings stored in **FAISS** for fast vector search
+- Embeddings are generated using:
+  - `all-MiniLM-L6-v2` (via `SentenceTransformer`) for local embeddings
+- Stored in an in-memory **FAISS** index for fast similarity search
 
-### 4. **Answering Questions**
-- Relevant context retrieved
-- GPT‑4o composes answers based only on indexed context
+### 4. **Question Answering**
+- When a question is asked:
+  - Relevant indexed steps/docs are retrieved
+  - GPT‑4o uses them as context to generate domain-specific answers
 
 ---
 
-## 🔧 Setup Instructions
+## Setup Instructions
 
 ### Requirements
-
 - Python 3.9+
-- OpenAI API Key (if using GPT‑4 Vision or OpenAI Embeddings)
+- OpenAI API Key (for GPT‑4 Vision + GPT-4o)
 
 ### Installation
 
-```bash
 git clone https://github.com/vinayjogani14/swimlane-chatbot.git
-cd swimlane-openapi-chatbot
+
+cd swimlane-chatbot
+
 python -m venv venv
-source venv/bin/activate   # or venv\Scripts\activate on Windows
+
+source venv/bin/activate     # or venv\Scripts\activate on Windows
 
 pip install -r requirements.txt
 
-Set Environment Variables
 
-Create a .env file:
+Environment Variables
+
+Create a .env file in the root:
 
 OPENAI_API_KEY=sk-xxxx...
 
-----
 
-📚 References
-	•	GPT-4 Vision: https://openai.com/index/gpt-4/
-	•	MiniLM Sentence Transformers: https://www.sbert.net/docs/sentence_transformer/pretrained_models.html
-	•	FAISS for vector search: https://github.com/facebookresearch/faiss
-	•	OpenAPI Spec: https://swagger.io/specification/
 ⸻
 
-🧑‍💻 Author
+References
+	•	GPT-4 Vision: https://openai.com/index/gpt-4/
+	•	MiniLM Sentence Transformers: https://www.sbert.net/docs/sentence_transformer/pretrained_models.html
+	•	FAISS for Vector Search: https://github.com/facebookresearch/faiss
+	•	OpenAPI Specification: https://swagger.io/specification/
+	•	Streamlit: https://streamlit.io/
 
-Vinay Jogani 
+⸻
 
----
+�Author
+
+Vinay Jogani
+
