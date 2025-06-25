@@ -89,10 +89,15 @@ chatbot-swimlane-app/
 ### Installation
 
 git clone https://github.com/vinayjogani14/swimlane-chatbot.git
+
 cd swimlane-chatbot
+
 python -m venv venv
+
 source venv/bin/activate     # or venv\Scripts\activate on Windows
+
 pip install -r requirements.txt
+
 
 Environment Variables
 
