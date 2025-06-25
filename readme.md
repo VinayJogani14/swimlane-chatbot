@@ -24,6 +24,8 @@ It is designed to support development portal documentation, accelerate onboardin
 
 ## Project Structure
 
+<pre>
+```
 chatbot-swimlane-app/
 │
 ├── app.py                     # Main Streamlit app entry point
@@ -44,13 +46,15 @@ chatbot-swimlane-app/
 │
 ├── utils/
 │   ├── constants.py
-│   ├── helpers.py             # Helpers for file I/O, validation, etc.
+│   └── helpers.py             # Helpers for file I/O, validation, etc.
 │
 ├── vectorstore/
 │   ├── db.py                  # FAISS-based vector DB implementation
 │   └── embedder.py            # Embedding logic using SentenceTransformer or OpenAI
 │
 └── .env                       # Secrets (e.g., OPENAI_API_KEY)
+```
+</pre>
 
 ---
 
