@@ -1,0 +1,29 @@
+# Streamlit UI
+streamlit
+
+# OpenAI API
+openai
+
+# Image Processing
+Pillow
+
+# Parsing & YAML
+pyyaml
+
+# Embedding Models
+sentence-transformers
+
+# Vector Database
+faiss-cpu
+
+# Environment Variable Loader
+python-dotenv
+
+# Testing
+pytest
+
+# Optional (for JSON/YAML validation, future use)
+jsonschema
+
+# Used in GPT-4 Vision if encoding images manually
+# (Handled by utils/helpers.py)
